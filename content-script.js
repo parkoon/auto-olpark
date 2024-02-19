@@ -14,11 +14,9 @@ function showCurrentTime() {
   // 현재 시간을 hh:mm:ss 형태로 표시
   var currentTime = hours + ":" + minutes + ":" + seconds;
 
-  const timeEl = document.getElementById("time");
-  timeEl.innerText = currentTime;
-
+  console.log(currentTime);
   // 특정 시간에 도달하면 alert 보여주기
-  if (currentTime === "09:00:00") {
+  if (currentTime === "08:59:59") {
     window.location.reload();
   }
 
@@ -49,7 +47,7 @@ window.onload = () => {
 
   if (!href.includes("resrvtn_aplictn.do")) return;
 
-  // showCurrentTime();
+  showCurrentTime();
 
   chrome.storage.sync.get(null, async (values) => {
     const date = `${values.year}${values.month}${values.day}`;
@@ -76,18 +74,26 @@ window.onload = () => {
     }, 100);
 
     timeClickIntervalId = setInterval(() => {
-      const time = document.querySelector(
-        `input[name="dateTimeType"][value="${values.time}"]`
+      const time1 = document.querySelector(
+        `input[name="dateTimeType"][value="${values.time1}"]`
+      );
+      const time2 = document.querySelector(
+        `input[name="dateTimeType"][value="${values.time2}"]`
       );
 
-      if (!time) {
+      if (!time1 && !time2) {
         return;
       }
 
-      if (!time.checked) {
-        time.click();
-        clearInterval(timeClickIntervalId);
+      if (!time1.checked) {
+        time1.click();
       }
+
+      if (!time2.checked) {
+        time2.click();
+      }
+
+      clearInterval(timeClickIntervalId);
     }, 100);
 
     courtClickIntervalId = setInterval(async () => {
